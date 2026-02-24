@@ -37,7 +37,7 @@ header{
 .top-bar{
     position: fixed;
     display: flex;
-    gap: 35rem;
+    gap: 26rem;
     justify-content: space-between;
     align-items: center;
     padding: 0 2rem;
@@ -71,6 +71,7 @@ header{
 
 .nav-bar ul li a:hover{
     color: #f0f0f0;
+    background-color: black;
 }
 
 .button-link{
