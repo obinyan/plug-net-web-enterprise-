@@ -48,30 +48,55 @@
 
     <body>
         <header>
-            <div class="top-bar">
-                <div class="logo">
-                    <img src="plugnet 2 logo white 2.png" alt="logo-image">
-                </div>
-                <div class="hamburger" id="hamburger">
-                    &#9776;
-                </div>
-                <div class="nav-bar">
-                    <ul>
-                        <li><a href="index.html">Home</a></li>
-                        <li><a href="#services">Services</a></li>
-                        <li><a href="#projects">Projects</a></li>
-                        <li><a href="#about">Meet the Founder</a></li>
-                        <li><a href="#contact">Contact</a></li>
-                    </ul>
-                    <a href="https://wa.me/2349031810995" target="_blank" class="button-link">Get in Touch</a>
-                </div>
-            </div>
-            <div class="hero-section">
-                <div class="heading">
-                    <img src="heading layer white.png" alt="Plugnet Web Enterprise — global web solutions">
-                </div>
-            </div>
-        </header>
+    <div class="top-bar">
+
+        <div class="logo">
+            <img src="plugnet 2 logo white 2.png" alt="Plug-Net Studio logo">
+        </div>
+
+        <nav class="nav-pill" id="navPill">
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="#about">About</a></li>
+                <li><a href="#projects">Projects</a></li>
+                <li><a href="#services">Service</a></li>
+                <li><a href="#blog">Blog</a></li>
+            </ul>
+        </nav>
+
+        <a href="https://wa.me/2349031810995" target="_blank" class="button-link">Get in Touch</a>
+
+        <button class="hamburger" id="hamburger" aria-label="Open menu" aria-expanded="false">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+    </div>
+
+    <!-- Mobile dropdown menu -->
+    <div class="mobile-menu" id="mobileMenu">
+        <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="#about">About</a></li>
+            <li><a href="#projects">Projects</a></li>
+            <li><a href="#services">Service</a></li>
+            <li><a href="#blog">Blog</a></li>
+        </ul>
+        <a href="https://wa.me/2349031810995" target="_blank" class="button-link mobile-cta">Get in Touch</a>
+    </div>
+
+    <div class="hero-section">
+        <video class="hero-video" autoplay muted loop playsinline poster="hero-poster.jpg">
+            <source src="12716-241674181_medium.mp4" type="video/mp4">
+        </video>
+        <div class="hero-overlay"></div>
+
+        <div class="heading">
+            <p class="welcome-text">Welcome to</p>
+            <h1 class="hero-title">Plug-Net Studio.</h1>
+        </div>
+    </div>
+</header>
         <section>
             <div class="services" id="services">
                 <div class="service-heading">
@@ -358,6 +383,26 @@
                 } else {
                     errorBox.textContent = '';
                 }
+            });
+
+            const hamburger = document.getElementById('hamburger');
+            const mobileMenu = document.getElementById('mobileMenu');
+
+            hamburger.addEventListener('click', () => {
+                const isOpen = mobileMenu.classList.toggle('active');
+                hamburger.classList.toggle('active');
+                hamburger.setAttribute('aria-expanded', isOpen);
+                document.body.style.overflow = isOpen ? 'hidden' : '';
+            });
+
+            // Close the menu when a link inside it is clicked
+            mobileMenu.querySelectorAll('a').forEach(link => {
+                link.addEventListener('click', () => {
+                    mobileMenu.classList.remove('active');
+                    hamburger.classList.remove('active');
+                    hamburger.setAttribute('aria-expanded', 'false');
+                    document.body.style.overflow = '';
+                });
             });
         </script>
     </body>
