@@ -91,7 +91,7 @@ header {
 }
 
 .nav-pill ul li a {
-    color: var(--black);
+    color: var(--#f0f0f0);
     font-weight: 600;
     font-size: 1rem;
     padding: 0.5rem 0.9rem;
