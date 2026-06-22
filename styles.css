@@ -651,6 +651,7 @@ footer p {
 
     .top-bar {
         padding: 1.1rem 1.5rem;
+        width: auto;
     }
 
     .logo img {
