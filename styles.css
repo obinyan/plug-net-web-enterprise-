@@ -271,66 +271,264 @@ header {
 }
 /*Section*/
 
-/*services*/
-
+/* ===== Services ===== */
 .services {
-    padding: 60px 20px;
+    padding: 80px 20px;
     background-color: #fff;
     text-align: center;
 }
 
 .service-heading h2 {
-    font-size: 4rem;
-    font-family: "Bruno Ace", sans-serif;
+    font-family: "Bona Nova", serif;
     font-weight: 400;
     font-style: normal;
-    margin-bottom: 2rem;
+    font-size: 3.5rem;
+    letter-spacing: 0.08em;
+    margin-bottom: 1.25rem;
     color: #000;
 }
 
 .service-heading p {
-    /*max-width: 700px;*/
-    margin: 0 auto 40px;
-    color: #000;
-    font-size: 1.5rem;
+    max-width: 620px;
+    margin: 0 auto 4rem;
+    color: #444;
+    font-size: 1.05rem;
     font-family: "Bona Nova", serif;
     font-weight: 400;
-    font-style: normal;
-    line-height: 1.6;
+    line-height: 1.7;
 }
 
-.service-body{
+.service-body {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: 30px;
-    max-width: 1200px;
+    grid-template-columns: repeat(2, minmax(280px, 1fr));
+    column-gap: 4.5rem;
+    row-gap: 3.5rem;
+    max-width: 1000px;
     margin: 0 auto;
 }
 
-.service-body > div {
-    background-color: #f9f9f9;
-    padding: 25px 20px;
-    border-radius: 12px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
+.service-card {
+    border-top: 1px solid #e2e2e2;
+    padding-top: 1.75rem;
     text-align: left;
+    transition: border-color 0.25s ease;
 }
 
-.service-body > div:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+.service-card:hover {
+    border-top-color: #999;
 }
 
-.service-body h3 {
-    font-size: 20px;
+.service-card h3 {
+    font-family: 'Inter', sans-serif;
+    font-size: 1.2rem;
+    font-weight: 700;
     color: #111;
-    margin-bottom: 12px;
+    margin-bottom: 0.85rem;
 }
 
-.service-body p {
-    font-size: 16px;
+.service-card p {
+    font-family: 'Inter', sans-serif;
+    font-size: 0.97rem;
+    color: #5c5c5c;
+    line-height: 1.65;
+    margin-bottom: 1.5rem;
+}
+
+/* Outline pill button, italic — opens the consultation modal */
+.consult-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    background-color: transparent;
+    border: 1px solid #1a1a1a;
+    border-radius: 2rem;
+    padding: 0.65rem 1.25rem;
+    font-family: "Bona Nova", serif;
+    font-style: italic;
+    font-size: 0.95rem;
+    color: #111;
+    cursor: pointer;
+    transition: background-color 0.25s ease, color 0.25s ease;
+}
+
+.consult-btn .arrow {
+    transition: transform 0.25s ease;
+}
+
+.consult-btn:hover {
+    background-color: #111;
+    color: #fff;
+}
+
+.consult-btn:hover .arrow {
+    transform: translateX(3px);
+}
+
+/* ===== Book a Consultation modal ===== */
+.consult-overlay {
+    position: fixed;
+    inset: 0;
+    background-color: rgba(0, 0, 0, 0.55);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1.5rem;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.25s ease, visibility 0.25s ease;
+    z-index: 2000;
+}
+
+.consult-overlay.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+.consult-modal {
+    position: relative;
+    background-color: #fff;
+    border-radius: 16px;
+    padding: 2.5rem 2.25rem 2.25rem;
+    max-width: 26rem;
+    width: 100%;
+    max-height: 90vh;
+    overflow-y: auto;
+    transform: translateY(12px);
+    transition: transform 0.25s ease;
+}
+
+.consult-overlay.active .consult-modal {
+    transform: translateY(0);
+}
+
+.consult-close {
+    position: absolute;
+    top: 1rem;
+    right: 1.1rem;
+    background: transparent;
+    border: none;
+    font-size: 1.6rem;
+    line-height: 1;
+    color: #888;
+    cursor: pointer;
+}
+
+.consult-close:hover {
+    color: #111;
+}
+
+.consult-modal h3 {
+    font-family: "Bona Nova", serif;
+    font-size: 1.6rem;
+    font-weight: 400;
+    color: #000;
+    margin-bottom: 0.5rem;
+}
+
+.consult-subtitle {
+    font-family: 'Inter', sans-serif;
+    font-size: 0.9rem;
     color: #666;
-    line-height: 1.6;
+    margin-bottom: 1.5rem;
+    line-height: 1.5;
+}
+
+.consult-modal form {
+    display: flex;
+    flex-direction: column;
+}
+
+.consult-modal label {
+    margin-top: 0.9rem;
+    margin-bottom: 0.35rem;
+    font-size: 0.85rem;
+    font-family: 'Inter', sans-serif;
+    color: #333;
+}
+
+.consult-modal input,
+.consult-modal textarea {
+    padding: 0.7rem 0.85rem;
+    border-radius: 8px;
+    border: 1px solid #ddd;
+    font-size: 0.95rem;
+    font-family: 'Inter', sans-serif;
+    color: #000;
+    outline: none;
+}
+
+.consult-modal input:focus,
+.consult-modal textarea:focus {
+    border-color: #111;
+}
+
+.consult-modal input[readonly] {
+    background-color: #f5f5f5;
+    color: #555;
+}
+
+.consult-modal textarea {
+    resize: vertical;
+}
+
+.consult-submit {
+    margin-top: 1.5rem;
+    padding: 0.75rem 0;
+    font-family: 'Inter', sans-serif;
+    font-size: 0.95rem;
+    font-weight: 600;
+    background-color: #111;
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.25s ease;
+}
+
+.consult-submit:hover {
+    background-color: #333;
+}
+
+.consult-divider {
+    display: flex;
+    align-items: center;
+    text-align: center;
+    margin: 1.5rem 0 1.25rem;
+    color: #999;
+    font-size: 0.85rem;
+    font-family: 'Inter', sans-serif;
+}
+
+.consult-divider::before,
+.consult-divider::after {
+    content: '';
+    flex: 1;
+    border-top: 1px solid #e2e2e2;
+}
+
+.consult-divider span {
+    padding: 0 0.75rem;
+}
+
+.consult-whatsapp {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    width: 100%;
+    padding: 0.7rem 0;
+    border: 1px solid #1db954;
+    border-radius: 2rem;
+    font-family: "Bona Nova", serif;
+    font-style: italic;
+    font-size: 0.95rem;
+    color: #1db954;
+    transition: background-color 0.25s ease, color 0.25s ease;
+}
+
+.consult-whatsapp:hover {
+    background-color: #1db954;
+    color: #fff;
 }
 
 /*projects*/
@@ -613,7 +811,7 @@ footer p {
 
 /* Responsive Styles */
 @media (max-width: 1200px) {
-   .nav-pill ul {
+    .nav-pill ul {
         gap: 1.1rem;
     }
 
@@ -630,10 +828,7 @@ footer p {
         width: 100%;
         height: auto;
     }
-    .service-body {
-        max-width: 100%;
-        padding: 0 1rem;
-    }
+    
     .projects > div {
         grid-template-columns: repeat(auto-fit, minmax(18rem, 1fr));
     }
@@ -662,7 +857,7 @@ footer p {
         width: 100%;
         height: auto;
     }
-    .service-heading h2,
+    
     .about-heading h2,
     .project-heading h2 {
         font-size: 2.2rem;
@@ -676,7 +871,7 @@ footer p {
 }
 
 @media (max-width: 768px) {
-  .nav-pill,
+    .nav-pill,
     .top-bar > .button-link {
         display: none;
     }
@@ -694,7 +889,21 @@ footer p {
         height: 5rem;
     }
 
-    .service-body,
+    .service-heading h2 {
+        font-size: 2.4rem;
+        letter-spacing: 0.05em;
+    }
+
+    .service-heading p {
+        font-size: 1rem;
+        margin-bottom: 3rem;
+    }
+
+    .service-body {
+        grid-template-columns: 1fr;
+        row-gap: 2.75rem;
+    }
+
     .projects > div {
         grid-template-columns: 1fr;
         gap: 4.5rem;
@@ -748,7 +957,19 @@ footer p {
     .mobile-menu ul li a {
         font-size: 1.25rem;
     }
-    .service-heading h2,
+
+    .services {
+        padding: 60px 16px;
+    }
+
+    .service-heading h2 {
+        font-size: 1.9rem;
+    }
+
+    .consult-modal {
+        padding: 2rem 1.5rem 1.75rem;
+    }
+
     .project-heading h2,
     .about-heading h2 {
         font-size: 1.5rem;
@@ -757,7 +978,7 @@ footer p {
         width: 100%;
         height: auto;
     }
-    .service-heading p,
+
     .contact-heading p {
         font-size: 1rem;
     }

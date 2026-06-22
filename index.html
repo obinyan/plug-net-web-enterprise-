@@ -99,68 +99,124 @@
             </div>
         </header>
         <section>
+            <!-- ===== Services section ===== -->
             <div class="services" id="services">
                 <div class="service-heading">
                     <h2>Services</h2>
                     <p>
-                        We offer a range of services to help you 
-                        achieve your online goals. Whether you 
-                        need a new website, a redesign, or ongoing 
+                        We offer a range of services to help you
+                        achieve your online goals. Whether you
+                        need a new website, a redesign, or ongoing
                         support, I'm here to help.
                     </p>
                 </div>
                 <div class="service-body">
-                    <div>
-                        <h3>Web Design & Development</h3>
+                    <div class="service-card">
+                        <h3>Web Design &amp; Development</h3>
                         <p>
-                            We craft visually appealing and user-friendly designs, 
-                            then bring them to life with clean, responsive 
-                            code — creating seamless experiences across both 
+                            We craft visually appealing and user-friendly designs,
+                            then bring them to life with clean, responsive
+                            code — creating seamless experiences across both
                             design and development.
                         </p>
+                        <button type="button" class="consult-btn" data-service="Web Design &amp; Development">
+                            Book a Consultation <span class="arrow" aria-hidden="true">&#8594;</span>
+                        </button>
                     </div>
-                    <div>
-                        <h3>Website Maintenance & Update</h3>
+
+                    <div class="service-card">
+                        <h3>Website Maintenance &amp; Update</h3>
                         <p>
-                            We ensure websites stay visually appealing, user-friendly, 
-                            and up to date by providing ongoing maintenance, 
-                            content updates, and performance optimizations for a 
+                            We ensure websites stay visually appealing, user-friendly,
+                            and up to date by providing ongoing maintenance,
+                            content updates, and performance optimizations for a
                             seamless user experience.
                         </p>
+                        <button type="button" class="consult-btn" data-service="Website Maintenance &amp; Update">
+                            Book a Consultation <span class="arrow" aria-hidden="true">&#8594;</span>
+                        </button>
                     </div>
-                    <div>
+
+                    <div class="service-card">
                         <h3>UI/UX Design</h3>
                         <p>
-                            We create user-centered designs that prioritize 
-                            usability and aesthetics, ensuring a seamless 
+                            We create user-centered designs that prioritize
+                            usability and aesthetics, ensuring a seamless
                             experience across all devices and platforms.
                         </p>
+                        <button type="button" class="consult-btn" data-service="UI/UX Design">
+                            Book a Consultation <span class="arrow" aria-hidden="true">&#8594;</span>
+                        </button>
                     </div>
-                    <div>
+
+                    <div class="service-card">
                         <h3>WordPress Development</h3>
                         <p>
-                            We specialize in building and customizing WordPress 
-                            websites, ensuring they are user-friendly, 
+                            We specialize in building and customizing WordPress
+                            websites, ensuring they are user-friendly,
                             visually appealing, and optimized for performance.
                         </p>
+                        <button type="button" class="consult-btn" data-service="WordPress Development">
+                            Book a Consultation <span class="arrow" aria-hidden="true">&#8594;</span>
+                        </button>
                     </div>
-                    <div>
+
+                    <div class="service-card">
                         <h3>Responsive Web Design</h3>
                         <p>
-                            We create responsive designs that adapt seamlessly 
-                            to all devices, ensuring a consistent and engaging 
-                            user experience across desktops, tablets, and 
+                            We create responsive designs that adapt seamlessly
+                            to all devices, ensuring a consistent and engaging
+                            user experience across desktops, tablets, and
                             smartphones.
                         </p>
+                        <button type="button" class="consult-btn" data-service="Responsive Web Design">
+                            Book a Consultation <span class="arrow" aria-hidden="true">&#8594;</span>
+                        </button>
                     </div>
-                    <div>
+
+                    <div class="service-card">
                         <h3>SEO Optimization</h3>
                         <p>
-                            We implement SEO best practices to enhance website 
-                            visibility, improve search engine rankings, and 
+                            We implement SEO best practices to enhance website
+                            visibility, improve search engine rankings, and
                             drive organic traffic to your site.
                         </p>
+                        <button type="button" class="consult-btn" data-service="SEO Optimization">
+                            Book a Consultation <span class="arrow" aria-hidden="true">&#8594;</span>
+                        </button>
                     </div>
+                </div>
+            </div>
+
+            <!-- ===== Book a Consultation modal (shared by every card above) ===== -->
+            <div class="consult-overlay" id="consultOverlay">
+                <div class="consult-modal" role="dialog" aria-modal="true" aria-labelledby="consultTitle">
+                    <button type="button" class="consult-close" id="consultClose" aria-label="Close">&times;</button>
+
+                    <h3 id="consultTitle">Book a Consultation</h3>
+                    <p class="consult-subtitle" id="consultSubtitle">Tell us a bit about your project and we'll get back to you.</p>
+
+                    <form action="https://usebasin.com/f/9aba4f1e5450" method="post" target="_blank" novalidate>
+                        <label for="consult-name">Full Name:</label>
+                        <input type="text" id="consult-name" name="name" autocomplete="name" required>
+
+                        <label for="consult-email">Email:</label>
+                        <input type="email" id="consult-email" name="email" autocomplete="email" required>
+
+                        <label for="consult-service">Service:</label>
+                        <input type="text" id="consult-service" name="service" readonly>
+
+                        <label for="consult-message">Message:</label>
+                        <textarea id="consult-message" name="message" rows="4" placeholder="Tell us a little about what you need..." required></textarea>
+
+                        <button type="submit" class="consult-submit">Send Request</button>
+                    </form>
+
+                    <div class="consult-divider"><span>or</span></div>
+
+                    <a href="#" id="consultWhatsapp" target="_blank" class="consult-whatsapp">
+                        Continue on WhatsApp <span class="arrow" aria-hidden="true">&#8594;</span>
+                    </a>
                 </div>
             </div>
             <div class="projects" id="projects">
@@ -413,6 +469,51 @@
 
             window.addEventListener('scroll', handleScroll);
             handleScroll(); // run once on load in case the page is already scrolled (e.g. on refresh)
+
+            // ===== Book a Consultation modal =====
+            const consultOverlay = document.getElementById('consultOverlay');
+            const consultClose = document.getElementById('consultClose');
+            const consultSubtitle = document.getElementById('consultSubtitle');
+            const consultServiceField = document.getElementById('consult-service');
+            const consultWhatsapp = document.getElementById('consultWhatsapp');
+            const consultNameField = document.getElementById('consult-name');
+
+            const WHATSAPP_NUMBER = '2349031810995';
+
+            function openConsultModal(service) {
+                consultServiceField.value = service;
+                consultSubtitle.textContent = `You're booking a consultation for: ${service}`;
+
+                const message = `Hi, I'd like to book a consultation for ${service}.`;
+                consultWhatsapp.href = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`;
+
+                consultOverlay.classList.add('active');
+                document.body.style.overflow = 'hidden';
+                consultNameField.focus();
+            }
+
+            function closeConsultModal() {
+                consultOverlay.classList.remove('active');
+                document.body.style.overflow = '';
+            }
+
+            document.querySelectorAll('.consult-btn').forEach(btn => {
+                btn.addEventListener('click', () => openConsultModal(btn.dataset.service));
+            });
+
+            consultClose.addEventListener('click', closeConsultModal);
+
+            // Click on the dark backdrop (but not inside the modal itself) closes it
+            consultOverlay.addEventListener('click', (e) => {
+                if (e.target === consultOverlay) closeConsultModal();
+            });
+
+            // Escape key closes it
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape' && consultOverlay.classList.contains('active')) {
+                    closeConsultModal();
+                }
+            });
         </script>
     </body>
     </html>
