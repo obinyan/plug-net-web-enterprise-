@@ -353,15 +353,7 @@
         </footer>
 
         <script>
-            document.addEventListener("DOMContentLoaded", function () {
-                const hamburger = document.querySelector(".hamburger");
-                const navBar = document.querySelector(".nav-bar");
-
-                hamburger.addEventListener("click", function () {
-                navBar.classList.toggle("show");
-                });
-            });
-
+            // ===== Contact form validation =====
             const form = document.getElementById('contact-form');
             const errorBox = document.getElementById('form-error');
 
@@ -386,12 +378,9 @@
                 }
             });
 
+            // ===== Hamburger / mobile menu toggle =====
             const hamburger = document.getElementById('hamburger');
             const mobileMenu = document.getElementById('mobileMenu');
-            const topBar = document.querySelector('.top-bar');
-
-            // Give the top bar a solid black background once the page is scrolled
-            const SCROLL_THRESHOLD = 40;
 
             hamburger.addEventListener('click', () => {
                 const isOpen = mobileMenu.classList.toggle('active');
@@ -409,6 +398,10 @@
                     document.body.style.overflow = '';
                 });
             });
+
+            // ===== Top bar background on scroll =====
+            const topBar = document.querySelector('.top-bar');
+            const SCROLL_THRESHOLD = 40;
 
             function handleScroll() {
                 if (window.scrollY > SCROLL_THRESHOLD) {
@@ -417,27 +410,9 @@
                     topBar.classList.remove('scrolled');
                 }
             }
-            
+
             window.addEventListener('scroll', handleScroll);
             handleScroll(); // run once on load in case the page is already scrolled (e.g. on refresh)
-            
-            
-            hamburger.addEventListener('click', () => {
-                const isOpen = mobileMenu.classList.toggle('active');
-                hamburger.classList.toggle('active');
-                hamburger.setAttribute('aria-expanded', isOpen);
-                document.body.style.overflow = isOpen ? 'hidden' : '';
-            });
-            
-            // Close the menu when a link inside it is clicked
-            mobileMenu.querySelectorAll('a').forEach(link => {
-                link.addEventListener('click', () => {
-                    mobileMenu.classList.remove('active');
-                    hamburger.classList.remove('active');
-                    hamburger.setAttribute('aria-expanded', 'false');
-                    document.body.style.overflow = '';
-                });
-            });
         </script>
     </body>
     </html>
