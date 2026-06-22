@@ -654,8 +654,8 @@ footer p {
     }
 
     .logo img {
-        width: 2.6rem;
-        height: 2.6rem;
+        width: 5rem;
+        height: 5rem;
     }
     .about-body img {
         width: 100%;
@@ -689,8 +689,8 @@ footer p {
     }
 
     .logo img {
-        width: 2.6rem;
-        height: 2.6rem;
+        width: 5rem;
+        height: 5rem;
     }
 
     .service-body,
@@ -732,8 +732,8 @@ footer p {
 
 @media (max-width: 480px) {
     .logo img {
-        width: 2.25rem;
-        height: 2.25rem;
+        width: 5rem;
+        height: 5rem;
     }
 
     .hero-title {
