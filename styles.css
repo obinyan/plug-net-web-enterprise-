@@ -309,8 +309,8 @@ header {
 
 .service-card {
     /*border-top: 1px solid #e2e2e2;*/
-    box-shadow: #000;
-    padding-top: 1.75rem;
+    box-shadow: 0 5px 14px rgba(0, 0, 0, 0.2);
+    padding: 1.75rem;
     text-align: left;
     transition: border-color 0.25s ease;
 }
