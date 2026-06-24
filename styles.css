@@ -681,7 +681,7 @@ header {
 
 @media (max-width: 600px) {
     .slider-section {
-        padding: 56px 0;
+        /*padding: 56px 0;*/
     }
 
     .slider-heading h2 {
@@ -689,9 +689,10 @@ header {
     }
 
     .slide {
-        width: 82%;
+        width: 100%;
         height: 280px;
         padding: 14px;
+        border-radius: 0;
     }
 
     .slider-arrow {
