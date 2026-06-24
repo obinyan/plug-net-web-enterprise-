@@ -539,72 +539,129 @@
             });
 
             // ===== Image slider =====
-            // Wrapped in DOMContentLoaded + an IIFE so this works regardless of where the
-            // <script> tag sits in the page, and never collides with variable names used
-            // elsewhere on the page.
+            // Wrapped in DOMContentLoaded + scoped locals so this works regardless of
+            // where the <script> tag sits, and never collides with names used elsewhere
+            // on the page.
             document.addEventListener('DOMContentLoaded', function () {
                 const sliderTrack = document.getElementById('sliderTrack');
                 if (!sliderTrack) return; // this page doesn't have the slider — do nothing
 
                 const sliderViewport = document.querySelector('.slider-viewport');
-                const sliderSlides = Array.from(sliderTrack.children);
                 const sliderDotsContainer = document.getElementById('sliderDots');
                 const sliderPrevBtn = document.getElementById('sliderPrev');
                 const sliderNextBtn = document.getElementById('sliderNext');
 
-                if (!sliderViewport || !sliderDotsContainer || !sliderPrevBtn || !sliderNextBtn || sliderSlides.length === 0) {
+                if (!sliderViewport || !sliderDotsContainer || !sliderPrevBtn || !sliderNextBtn || sliderTrack.children.length === 0) {
                     console.warn('Slider markup is incomplete — check that #sliderTrack, .slider-viewport, #sliderDots, #sliderPrev and #sliderNext all exist.');
                     return;
                 }
 
+                // ----- Build a looping track: [cloneOfLast, S1, S2, ..., S5, cloneOfFirst] -----
+                const realSlides = Array.from(sliderTrack.children);
+                const totalReal = realSlides.length;
+
+                const firstClone = realSlides[0].cloneNode(true);
+                const lastClone = realSlides[totalReal - 1].cloneNode(true);
+                firstClone.classList.add('slide-clone');
+                lastClone.classList.add('slide-clone');
+                firstClone.setAttribute('aria-hidden', 'true');
+                lastClone.setAttribute('aria-hidden', 'true');
+
+                sliderTrack.insertBefore(lastClone, sliderTrack.firstChild);
+                sliderTrack.appendChild(firstClone);
+
+                const sliderSlides = Array.from(sliderTrack.children); // length = totalReal + 2
+                const FIRST_REAL_POS = 1;
+                const LAST_REAL_POS = totalReal;          // position of the real last slide
+                const FIRST_CLONE_POS = sliderSlides.length - 1; // position of the cloned first slide
+                const LAST_CLONE_POS = 0;                  // position of the cloned last slide
+
                 const AUTO_INTERVAL = 4000;
+                const TRANSITION_MS = 650; // a touch longer than the 0.6s CSS transition
                 const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-                let currentIndex = 0;
+                let position = FIRST_REAL_POS; // index within the extended (cloned) track
+                let isAnimating = false;
                 let autoTimer = null;
 
-                // Build the dots to match however many slides exist
-                sliderSlides.forEach((_, i) => {
+                // Dots are built against the real slide count only — clones don't get one
+                realSlides.forEach((_, i) => {
                     const dot = document.createElement('button');
                     dot.className = 'slider-dot';
                     dot.setAttribute('aria-label', `Go to slide ${i + 1}`);
                     dot.addEventListener('click', () => {
-                        goToSlide(i);
+                        goToRealSlide(i);
                         restartAutoSlide();
                     });
                     sliderDotsContainer.appendChild(dot);
                 });
                 const sliderDots = Array.from(sliderDotsContainer.children);
 
-                function updateSlider() {
-                    sliderSlides.forEach((slide, i) => slide.classList.toggle('active', i === currentIndex));
-                    sliderDots.forEach((dot, i) => dot.classList.toggle('active', i === currentIndex));
+                function render() {
+                    sliderSlides.forEach((slide, i) => slide.classList.toggle('active', i === position));
+
+                    const realIndex = ((position - FIRST_REAL_POS) % totalReal + totalReal) % totalReal;
+                    sliderDots.forEach((dot, i) => dot.classList.toggle('active', i === realIndex));
 
                     const viewportWidth = sliderViewport.clientWidth;
                     const gap = parseFloat(getComputedStyle(sliderTrack).gap) || 0;
 
-                    // Distance from the start of the track to the center of the active slide
                     let distanceToActiveCenter = 0;
-                    for (let i = 0; i < currentIndex; i++) {
+                    for (let i = 0; i < position; i++) {
                         distanceToActiveCenter += sliderSlides[i].offsetWidth + gap;
                     }
-                    distanceToActiveCenter += sliderSlides[currentIndex].offsetWidth / 2;
+                    distanceToActiveCenter += sliderSlides[position].offsetWidth / 2;
 
                     const offset = distanceToActiveCenter - viewportWidth / 2;
                     sliderTrack.style.transform = `translateX(-${offset}px)`;
                 }
 
-                function goToSlide(index) {
-                    currentIndex = (index + sliderSlides.length) % sliderSlides.length;
-                    updateSlider();
+                // Move to a position. animate=false jumps instantly (used for the
+                // invisible snap-back when crossing onto a clone).
+                function goToPosition(newPosition, animate) {
+                    if (!animate) {
+                        sliderTrack.style.transition = 'none';
+                    }
+                    position = newPosition;
+                    render();
+                    if (!animate) {
+                        void sliderTrack.offsetWidth; // force reflow so the jump applies with no transition
+                        sliderTrack.style.transition = '';
+                    }
+                }
+
+                function move(delta) {
+                    if (isAnimating) return;
+                    isAnimating = true;
+
+                    const newPos = position + delta;
+                    goToPosition(newPos, true);
+
+                    let snapTarget = null;
+                    if (newPos === FIRST_CLONE_POS) snapTarget = FIRST_REAL_POS;
+                    if (newPos === LAST_CLONE_POS) snapTarget = LAST_REAL_POS;
+
+                    setTimeout(() => {
+                        if (snapTarget !== null) {
+                            goToPosition(snapTarget, false); // invisible snap, looks identical to the clone it replaces
+                        }
+                        isAnimating = false;
+                    }, TRANSITION_MS);
                 }
 
                 function nextSlide() {
-                    goToSlide(currentIndex + 1);
+                    move(1);
                 }
 
                 function prevSlide() {
-                    goToSlide(currentIndex - 1);
+                    move(-1);
+                }
+
+                function goToRealSlide(realIdx) {
+                    if (isAnimating) return;
+                    isAnimating = true;
+                    goToPosition(realIdx + FIRST_REAL_POS, true);
+                    setTimeout(() => { isAnimating = false; }, TRANSITION_MS);
                 }
 
                 function startAutoSlide() {
@@ -631,11 +688,9 @@
                     restartAutoSlide();
                 });
 
-                // Pause while the user's mouse is over the slider
                 sliderViewport.addEventListener('mouseenter', stopAutoSlide);
                 sliderViewport.addEventListener('mouseleave', startAutoSlide);
 
-                // Pause when the tab isn't visible, resume when it is
                 document.addEventListener('visibilitychange', () => {
                     if (document.hidden) {
                         stopAutoSlide();
@@ -644,7 +699,6 @@
                     }
                 });
 
-                // Basic swipe support for touch devices
                 let touchStartX = 0;
 
                 sliderViewport.addEventListener('touchstart', (e) => {
@@ -665,11 +719,10 @@
                     startAutoSlide();
                 });
 
-                // Recalculate the centering offset if the window is resized
-                window.addEventListener('resize', updateSlider);
+                window.addEventListener('resize', render);
 
-                // Init — starts centered on slide 0
-                updateSlider();
+                // Init — starts centered on the real first slide, no transition on load
+                goToPosition(FIRST_REAL_POS, false);
                 startAutoSlide();
             });
         </script>
