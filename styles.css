@@ -665,123 +665,88 @@ header {
     transform: scale(1.3);
 }
 
-/* ===== Responsive ===== */
-@media (max-width: 900px) {
-    .slide {
-        width: 75%;
-        height: 360px;
-    }
-
-    .slider-arrow {
-        width: 40px;
-        height: 40px;
-        font-size: 1.4rem;
-    }
-}
-
-@media (max-width: 600px) {
-    .slider-section {
-        /*padding: 56px 0;*/
-    }
-
-    .slider-heading h2 {
-        font-size: 2rem;
-    }
-
-    .slide {
-        width: 100%;
-        height: 280px;
-        padding: 14px;
-        border-radius: 0;
-    }
-
-    .slider-arrow {
-        width: 36px;
-        height: 36px;
-        font-size: 1.25rem;
-        display: none;
-    }
-
-    .slider-wrapper {
-        padding: 0 1rem;
-    }
-}
-
-@media (prefers-reduced-motion: reduce) {
-    .slider-track,
-    .slide {
-        transition: none;
-    }
-}
-
-/*projects*/
+/* ===== Projects ===== */
+/* Add Dancing Script to your Google Fonts <link> tag for the heading below:
+   family=Dancing+Script:wght@600;700 */
 
 .projects {
-    /*max-width: 75rem;*/
-    /*margin: 3.75rem auto;*/
-    padding: 4.2rem 1.25rem 4.5rem 1.25rem;
-    color: #fff;
-    background-color: black;
+    padding: 4.5rem 1.5rem 5rem;
+    background-color: #000;
     text-align: center;
-    /*font-family: 'Segoe UI', sans-serif;*/
 }
 
 .project-heading h2 {
-    font-size: 4rem;
-    font-family: "Bruno Ace", sans-serif;
-    font-weight: 400;
-    font-style: normal;
-    margin-bottom: 2.5rem;
-    color: #ffffff;
+    font-family: 'Dancing Script', cursive;
+    font-weight: 600;
+    font-size: 3.25rem;
+    color: #fff;
+    margin-bottom: 3rem;
 }
 
-/*.sub-heading4::after {
-    content: '';
-    width: 3.75rem;
-    height: 0.25rem;
-    background: #007acc;
-    display: block;
-    margin: 0.625rem auto 0;
-    border-radius: 0.125rem;
-}*/
-
-.project-body{
-    margin-top: 2rem;
-}
-
-.projects > div {
+.project-body {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(32rem, 1fr));
-    gap: 2rem;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 2.5rem;
+    max-width: 1100px;
+    margin: 0 auto;
 }
 
 .project {
-    /*background: #fff;*/
-    border-radius: 12px;
-    box-shadow: 0 0.375 1.25rem rgba(0, 0, 0, 0.08);
+    display: block;
+    background-color: #fff;
+    border-radius: 14px;
     overflow: hidden;
-    display: flex;
-    flex-direction: column;
+    text-decoration: none;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.25);
     transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 .project:hover {
     transform: translateY(-6px);
-    box-shadow: 0 0.625rem 1.5rem rgba(0, 0, 0, 0.12);
+    box-shadow: 0 14px 30px rgba(0, 0, 0, 0.35);
 }
 
-.project img {
+.project:focus-visible {
+    outline: 3px solid #fff;
+    outline-offset: 3px;
+}
+
+/* Fixed aspect-ratio frame — keeps every screenshot a consistent size no
+   matter how tall or wide the source image actually is */
+.project-image {
     width: 100%;
-    height: 25rem;
-    object-fit: contain;
+    aspect-ratio: 16 / 10;
+    overflow: hidden;
+    background-color: #f2f2f2;
 }
 
-.project p {
-    padding: 20px;
-    font-size: 1rem;
-    line-height: 1.6;
-    color: #fff;
+.project-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: top; /* keeps each site's header/hero in frame instead of a random crop */
+    display: block;
+    transition: transform 0.4s ease;
 }
+
+.project:hover .project-image img {
+    transform: scale(1.04);
+}
+
+.project-info {
+    padding: 1.6rem 1.25rem 1.85rem;
+    text-align: left;
+}
+
+.project-info h3 {
+    font-family: 'Inter', sans-serif;
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: #111;
+    margin: 0;
+}
+
+
 
 /*about*/
 
@@ -1012,9 +977,7 @@ footer p {
         height: auto;
     }
     
-    .projects > div {
-        grid-template-columns: repeat(auto-fit, minmax(18rem, 1fr));
-    }
+
 }
 
 @media (max-width: 900px) {
@@ -1041,15 +1004,8 @@ footer p {
         height: auto;
     }
     
-    .about-heading h2,
-    .project-heading h2 {
+    .about-heading h2 {
         font-size: 2.2rem;
-    }
-    .projects > div {
-        grid-template-columns: 1fr;
-    }
-    .project img {
-        height: 25rem;
     }
 }
 
@@ -1087,10 +1043,6 @@ footer p {
         row-gap: 2.75rem;
     }
 
-    .projects > div {
-        grid-template-columns: 1fr;
-        gap: 4.5rem;
-    }
 
     .about-body img {
         width: 100%;
@@ -1153,7 +1105,6 @@ footer p {
         padding: 2rem 1.5rem 1.75rem;
     }
 
-    .project-heading h2,
     .about-heading h2 {
         font-size: 1.5rem;
     }
@@ -1165,13 +1116,7 @@ footer p {
     .contact-heading p {
         font-size: 1rem;
     }
-    .project img {
-        height: 14rem;
-    }
-    .project p {
-        font-size: 0.9rem;
-        padding: 10px;
-    }
+    
     .button-link {
         font-size: 1rem;
         padding: 0.5rem 1rem;
@@ -1195,3 +1140,77 @@ footer p {
         font-size: clamp(1.75rem, 7vw, 2.75rem);
     }
 }
+
+/* ===== Responsive ===== */
+@media (max-width: 900px) {
+    .slide {
+        width: 75%;
+        height: 360px;
+    }
+
+    .slider-arrow {
+        width: 40px;
+        height: 40px;
+        font-size: 1.4rem;
+    }
+}
+
+@media (max-width: 600px) {
+    .slider-section {
+        /*padding: 56px 0;*/
+    }
+
+    .slider-heading h2 {
+        font-size: 2rem;
+    }
+
+    .slide {
+        width: 100%;
+        height: 280px;
+        padding: 14px;
+        border-radius: 0;
+    }
+
+    .slider-arrow {
+        width: 36px;
+        height: 36px;
+        font-size: 1.25rem;
+        display: none;
+    }
+
+    .slider-wrapper {
+        padding: 0 1rem;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .slider-track,
+    .slide {
+        transition: none;
+    }
+}
+
+/* ===== Responsive ===== */
+@media (max-width: 900px) {
+    .project-body {
+        grid-template-columns: 1fr;
+        max-width: 480px;
+    }
+}
+
+@media (max-width: 480px) {
+    .projects {
+        padding: 3.5rem 1.25rem 4rem;
+    }
+
+    .project-heading h2 {
+        font-size: 2.4rem;
+        margin-bottom: 2rem;
+    }
+
+    .project-body {
+        gap: 1.75rem;
+    }
+}
+
+
