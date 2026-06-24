@@ -221,7 +221,7 @@
             <!-- ===== Image slider section ===== -->
             <section class="slider-section" id="portfolio-slider">
                 <div class="slider-heading">
-                    <h2>Our Work</h2>
+                    <h2>What We Do</h2>
                 </div>
 
                 <div class="slider-wrapper">
@@ -539,127 +539,139 @@
             });
 
             // ===== Image slider =====
-            const sliderTrack = document.getElementById('sliderTrack');
-            const sliderViewport = document.querySelector('.slider-viewport');
-            const sliderSlides = Array.from(sliderTrack.children);
-            const sliderDotsContainer = document.getElementById('sliderDots');
-            const sliderPrevBtn = document.getElementById('sliderPrev');
-            const sliderNextBtn = document.getElementById('sliderNext');
+            // Wrapped in DOMContentLoaded + an IIFE so this works regardless of where the
+            // <script> tag sits in the page, and never collides with variable names used
+            // elsewhere on the page.
+            document.addEventListener('DOMContentLoaded', function () {
+                const sliderTrack = document.getElementById('sliderTrack');
+                if (!sliderTrack) return; // this page doesn't have the slider — do nothing
 
-            const AUTO_INTERVAL = 4000;
-            const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+                const sliderViewport = document.querySelector('.slider-viewport');
+                const sliderSlides = Array.from(sliderTrack.children);
+                const sliderDotsContainer = document.getElementById('sliderDots');
+                const sliderPrevBtn = document.getElementById('sliderPrev');
+                const sliderNextBtn = document.getElementById('sliderNext');
 
-            let currentIndex = 0;
-            let autoTimer = null;
-
-            // Build the dots to match however many slides exist
-            sliderSlides.forEach((_, i) => {
-                const dot = document.createElement('button');
-                dot.className = 'slider-dot';
-                dot.setAttribute('aria-label', `Go to slide ${i + 1}`);
-                dot.addEventListener('click', () => {
-                    goToSlide(i);
-                    restartAutoSlide();
-                });
-                sliderDotsContainer.appendChild(dot);
-            });
-            const sliderDots = Array.from(sliderDotsContainer.children);
-
-            function updateSlider() {
-                sliderSlides.forEach((slide, i) => slide.classList.toggle('active', i === currentIndex));
-                sliderDots.forEach((dot, i) => dot.classList.toggle('active', i === currentIndex));
-
-                const viewportWidth = sliderViewport.clientWidth;
-                const gap = parseFloat(getComputedStyle(sliderTrack).gap) || 0;
-
-                // Distance from the start of the track to the center of the active slide
-                let distanceToActiveCenter = 0;
-                for (let i = 0; i < currentIndex; i++) {
-                    distanceToActiveCenter += sliderSlides[i].offsetWidth + gap;
+                if (!sliderViewport || !sliderDotsContainer || !sliderPrevBtn || !sliderNextBtn || sliderSlides.length === 0) {
+                    console.warn('Slider markup is incomplete — check that #sliderTrack, .slider-viewport, #sliderDots, #sliderPrev and #sliderNext all exist.');
+                    return;
                 }
-                distanceToActiveCenter += sliderSlides[currentIndex].offsetWidth / 2;
 
-                const offset = distanceToActiveCenter - viewportWidth / 2;
-                sliderTrack.style.transform = `translateX(-${offset}px)`;
-            }
+                const AUTO_INTERVAL = 4000;
+                const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-            function goToSlide(index) {
-                currentIndex = (index + sliderSlides.length) % sliderSlides.length;
-                updateSlider();
-            }
+                let currentIndex = 0;
+                let autoTimer = null;
 
-            function nextSlide() {
-                goToSlide(currentIndex + 1);
-            }
+                // Build the dots to match however many slides exist
+                sliderSlides.forEach((_, i) => {
+                    const dot = document.createElement('button');
+                    dot.className = 'slider-dot';
+                    dot.setAttribute('aria-label', `Go to slide ${i + 1}`);
+                    dot.addEventListener('click', () => {
+                        goToSlide(i);
+                        restartAutoSlide();
+                    });
+                    sliderDotsContainer.appendChild(dot);
+                });
+                const sliderDots = Array.from(sliderDotsContainer.children);
 
-            function prevSlide() {
-                goToSlide(currentIndex - 1);
-            }
+                function updateSlider() {
+                    sliderSlides.forEach((slide, i) => slide.classList.toggle('active', i === currentIndex));
+                    sliderDots.forEach((dot, i) => dot.classList.toggle('active', i === currentIndex));
 
-            function startAutoSlide() {
-                if (prefersReducedMotion) return; // respect the user's motion preference
-                autoTimer = setInterval(nextSlide, AUTO_INTERVAL);
-            }
+                    const viewportWidth = sliderViewport.clientWidth;
+                    const gap = parseFloat(getComputedStyle(sliderTrack).gap) || 0;
 
-            function stopAutoSlide() {
-                clearInterval(autoTimer);
-            }
+                    // Distance from the start of the track to the center of the active slide
+                    let distanceToActiveCenter = 0;
+                    for (let i = 0; i < currentIndex; i++) {
+                        distanceToActiveCenter += sliderSlides[i].offsetWidth + gap;
+                    }
+                    distanceToActiveCenter += sliderSlides[currentIndex].offsetWidth / 2;
 
-            function restartAutoSlide() {
-                stopAutoSlide();
-                startAutoSlide();
-            }
+                    const offset = distanceToActiveCenter - viewportWidth / 2;
+                    sliderTrack.style.transform = `translateX(-${offset}px)`;
+                }
 
-            sliderNextBtn.addEventListener('click', () => {
-                nextSlide();
-                restartAutoSlide();
-            });
+                function goToSlide(index) {
+                    currentIndex = (index + sliderSlides.length) % sliderSlides.length;
+                    updateSlider();
+                }
 
-            sliderPrevBtn.addEventListener('click', () => {
-                prevSlide();
-                restartAutoSlide();
-            });
+                function nextSlide() {
+                    goToSlide(currentIndex + 1);
+                }
 
-            // Pause while the user's mouse is over the slider
-            sliderViewport.addEventListener('mouseenter', stopAutoSlide);
-            sliderViewport.addEventListener('mouseleave', startAutoSlide);
+                function prevSlide() {
+                    goToSlide(currentIndex - 1);
+                }
 
-            // Pause when the tab isn't visible, resume when it is
-            document.addEventListener('visibilitychange', () => {
-                if (document.hidden) {
+                function startAutoSlide() {
+                    if (prefersReducedMotion) return; // respect the user's motion preference
+                    autoTimer = setInterval(nextSlide, AUTO_INTERVAL);
+                }
+
+                function stopAutoSlide() {
+                    clearInterval(autoTimer);
+                }
+
+                function restartAutoSlide() {
                     stopAutoSlide();
-                } else {
                     startAutoSlide();
                 }
-            });
 
-            // Basic swipe support for touch devices
-            let touchStartX = 0;
-
-            sliderViewport.addEventListener('touchstart', (e) => {
-                touchStartX = e.touches[0].clientX;
-                stopAutoSlide();
-            }, { passive: true });
-
-            sliderViewport.addEventListener('touchend', (e) => {
-                const touchEndX = e.changedTouches[0].clientX;
-                const delta = touchEndX - touchStartX;
-
-                if (delta > 50) {
-                    prevSlide();
-                } else if (delta < -50) {
+                sliderNextBtn.addEventListener('click', () => {
                     nextSlide();
-                }
+                    restartAutoSlide();
+                });
 
+                sliderPrevBtn.addEventListener('click', () => {
+                    prevSlide();
+                    restartAutoSlide();
+                });
+
+                // Pause while the user's mouse is over the slider
+                sliderViewport.addEventListener('mouseenter', stopAutoSlide);
+                sliderViewport.addEventListener('mouseleave', startAutoSlide);
+
+                // Pause when the tab isn't visible, resume when it is
+                document.addEventListener('visibilitychange', () => {
+                    if (document.hidden) {
+                        stopAutoSlide();
+                    } else {
+                        startAutoSlide();
+                    }
+                });
+
+                // Basic swipe support for touch devices
+                let touchStartX = 0;
+
+                sliderViewport.addEventListener('touchstart', (e) => {
+                    touchStartX = e.touches[0].clientX;
+                    stopAutoSlide();
+                }, { passive: true });
+
+                sliderViewport.addEventListener('touchend', (e) => {
+                    const touchEndX = e.changedTouches[0].clientX;
+                    const delta = touchEndX - touchStartX;
+
+                    if (delta > 50) {
+                        prevSlide();
+                    } else if (delta < -50) {
+                        nextSlide();
+                    }
+
+                    startAutoSlide();
+                });
+
+                // Recalculate the centering offset if the window is resized
+                window.addEventListener('resize', updateSlider);
+
+                // Init — starts centered on slide 0
+                updateSlider();
                 startAutoSlide();
             });
-
-            // Recalculate the centering offset if the window is resized
-            window.addEventListener('resize', updateSlider);
-
-            // Init
-            updateSlider();
-            startAutoSlide();
         </script>
     </body>
     </html>
