@@ -699,6 +699,7 @@ header {
         width: 36px;
         height: 36px;
         font-size: 1.25rem;
+        display: none;
     }
 
     .slider-wrapper {
