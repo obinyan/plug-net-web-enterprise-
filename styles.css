@@ -695,6 +695,8 @@ header {
     display: block;
     background-color: #fff;
     /*border-radius: 14px;*/
+    border-bottom-right-radius: 25px;
+    border-bottom-left-radius: 25px;
     overflow: hidden;
     text-decoration: none;
     box-shadow: 0 4px 16px rgba(0, 0, 0, 0.25);
@@ -716,6 +718,8 @@ header {
 .project-image {
     width: 100%;
     /*aspect-ratio: 16 / 10;*/
+    border-bottom-right-radius: 25px;
+    border-bottom-left-radius: 25px;
     overflow: hidden;
     background-color: #f2f2f2;
 }
